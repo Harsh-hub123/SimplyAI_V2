@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { roadmapConcepts } from '../data/roadmapConcepts';
 import { LineIcon } from '../components/Icons';
 import { Arrow, Bars, BigPicture, InformationVisual, lessonImage, Matrix, Vector } from '../components/learn/LessonVisuals';
 import s from '../components/learn/Learn.module.css';
@@ -157,8 +156,10 @@ function ScreenFour() {
     <div className={s.uncertaintyIntro}>
       <p>So far, we have seen how mathematics helps us:</p>
       <ul><li>organize information</li><li>describe relationships</li><li>understand change</li></ul>
-      <p>But there is one more idea that matters deeply in AI:</p>
-      <p className={s.uncertaintyPremise}>A model does not know the correct answer in advance.</p>
+      <div className={s.uncertaintyBridge}>
+        <p>But there is one more idea that matters deeply in AI:</p>
+        <p className={s.uncertaintyPremise}>A model does not know the correct answer in advance.</p>
+      </div>
       <p>When it sees something new, it uses what it has learned to estimate what the answer is most likely to be. That estimate is a prediction.</p>
       <p>Sometimes the prediction is right. Sometimes it is wrong.</p>
     </div>
@@ -168,30 +169,32 @@ function ScreenFour() {
         <header><span aria-hidden="true">01</span><h2 id="best-guess-heading">A model’s best guess can still be wrong</h2></header>
         <p>The model’s estimated probabilities are:</p>
         <figure className={s.initialEstimates} aria-label="Illustrative estimates for a photograph showing a dog: Cat 58%, Dog 37%, Fox 5%.">
-          <div className={s.dogPortrait}><img src={lessonImage('dog')} alt="A golden retriever’s face. The actual animal is a dog."/></div>
-          <div className={s.estimateChart}><Bars/><p className={s.estimatesCaption}>Illustrative model estimates</p></div>
+          <div className={s.estimateMedia}>
+            <div className={s.dogPortrait}><img src={lessonImage('dog')} alt="A golden retriever’s face. The actual animal is a dog."/></div>
+            <div className={s.estimateChart}><Bars/><p className={s.estimatesCaption}>Illustrative model estimates</p></div>
+          </div>
+          <figcaption className={s.predictedActual}><span>Predicted: <strong>Cat</strong></span><span aria-hidden="true"> · </span><span>Actual: <strong>Dog</strong></span></figcaption>
         </figure>
-        <p className={s.predictedActual}><span>Predicted: <strong>Cat</strong></span><span aria-hidden="true"> · </span><span>Actual: <strong>Dog</strong></span></p>
         <p>Cat has the highest percentage, so the model predicts Cat. But the image shows a Dog.</p>
         <p>The model chose the answer it considered most likely and still made a mistake.</p>
-        <p className={s.uncertaintyEmphasis}>“Most likely” does not mean “definitely correct.”</p>
+        <p className={s.uncertaintyEmphasis}>‘Most likely’ does not mean ‘definitely correct.’</p>
         <p>But how strongly does a model favor its chosen answer? Let’s compare two examples.</p>
       </section>
       <section className={s.uncertaintyPanel} aria-labelledby="different-uncertainty-heading">
         <header><span aria-hidden="true">02</span><h2 id="different-uncertainty-heading">The same prediction can carry different uncertainty</h2></header>
         <p>Imagine a model choosing between Cat and Dog:</p>
-        <div className={s.probabilityCases}>
+        <figure className={s.probabilityCases} aria-label="Comparison of illustrative Cat and Dog probabilities on the same 0–100% scale">
           <section className={s.uncertaintyCase} aria-labelledby="case-a-heading">
-            <h3 id="case-a-heading">Case A — Cat: 99% · Dog: 1%</h3>
+            <h3 id="case-a-heading"><span>Case A</span> — Cat: 99% · Dog: 1%</h3>
             <Bars values={[["Cat", 99], ["Dog", 1]]}/>
             <p>The model strongly favors Cat.</p>
           </section>
           <section className={s.uncertaintyCase} aria-labelledby="case-b-heading">
-            <h3 id="case-b-heading">Case B — Cat: 51% · Dog: 49%</h3>
+            <h3 id="case-b-heading"><span>Case B</span> — Cat: 51% · Dog: 49%</h3>
             <Bars values={[["Cat", 51], ["Dog", 49]]}/>
             <p>The model is almost evenly split.</p>
           </section>
-        </div>
+        </figure>
         <p>Both cases produce the prediction Cat, but the probabilities show a very different level of uncertainty.</p>
         <p>The answer alone doesn’t tell us how strongly the model favors it.</p>
       </section>
@@ -219,30 +222,87 @@ function ScreenFive() {
   </>;
 }
 
+function DataOne() {
+  return <>
+    <p>In Mathematics, we learned how to represent a house using numbers.<br/>Now let’s put that information to use.</p>
+    <p>Suppose we want a model to estimate a house’s selling price.</p>
+    <h2 className={s.editorialHeading}>What would the model need to know?</h2>
+    <div className={s.twoColumns}><div>
+      <p>Let’s start with a house that has already been sold.</p>
+      <p>These details give us clues about the house. The model can use them to estimate its price.</p>
+      <p>In machine learning, we call these clues <em>features</em>. They are the <em>inputs</em> we provide to the model.</p>
+      <p>Other details, such as location and condition, might also help.</p>
+      <p>The selling price is our <mark><strong>target</strong></mark>: the value we want the model to predict.</p>
+      <p>Because this house has already been sold, we know both its features and its actual selling price.</p>
+    </div><figure className={s.dataHouse}>
+      <img src={`${import.meta.env.BASE_URL}images/learn/house-dusk.png`} alt="A house with warm illuminated windows at dusk"/>
+      <figcaption>A house already sold</figcaption><h3>Features / inputs</h3>
+      <dl><div><dt>Size</dt><dd>1,200 sq ft</dd></div><div><dt>Bedrooms</dt><dd>3</dd></div><div><dt>Age</dt><dd>8 years</dd></div></dl>
+      <div className={s.dataTarget}><b>Target</b><span>Recorded selling price</span><strong>₹50 lakh</strong></div>
+    </figure></div>
+    <p className={s.dataClosing}>For a new house, we can provide the same kinds of features and ask the model to estimate the price.</p>
+    <MentalModel>Features are the information we give the model to make a prediction.<br/>The target is the value we want the model to predict.</MentalModel>
+  </>;
+}
+
+function DataTwo() {
+  return <><p>One sold house gives us one example. To learn useful patterns, a model needs many examples.</p><p>Let’s bring several houses together, keeping the same details in the same order.</p>
+    <div className={s.matrixScroll}><table className={s.dataTable}><caption>Illustrative examples of houses already sold</caption><thead><tr><th>Size (sq ft)</th><th>Bedrooms</th><th>Age (years)</th><th>Price (₹ lakh)</th></tr></thead><tbody>{[['1,200', '3', '8', '50'], ['1,500', '4', '5', '65'], ['900', '2', '12', '35']].map(row => <tr key={row[0]}>{row.map((value, i) => <td key={i}>{value}</td>)}</tr>)}</tbody></table></div>
+    <div className={s.teachingPair}><section className={s.relationshipPanel}><h2>Each row is an example</h2><p>One row describes one house: its features and the recorded price we want the model to learn to predict.</p><p>A collection of examples is called a <em>dataset</em>.</p></section><section className={s.relationshipPanel}><h2>Each column has a purpose</h2><p>Size, bedrooms and age are feature columns. Selling price is the target column.</p><p>The features form a matrix, with each target paired with its matching row.</p></section></div>
+    <p className={s.dataClosing}>During training, a model learns patterns connecting features with targets. Later, we check its predictions on examples it did not learn from.</p><MentalModel>A dataset brings examples together in a consistent structure. Each example pairs useful inputs with a known target.</MentalModel></>;
+}
+
+function DataThree() {
+  return <><p>A list of numbers is useful only when we know what each number represents.</p><Vector labeled/>
+    <div className={s.teachingPair}><section className={s.relationshipPanel}><h2>Keep the meaning consistent</h2><p>The first position always means size in square feet, the second means bedrooms, and the third means age in years.</p><p>Changing the order or mixing square feet with square metres would change what the model receives.</p></section><section className={s.relationshipPanel}><h2>Choose a representation for the task</h2><p>Location can help too. We need a consistent way to encode it, such as separate indicators for different neighbourhoods.</p><p>An arbitrary number for a neighbourhood does not mean one location is “twice” another.</p></section></div>
+    <h2 className={s.editorialHeading}>Use information available when predicting</h2><p>For a new house, we do not know the selling price yet. It is the target, rather than an input feature.</p><p>Missing values and different numerical scales also need care. Any preparation learned from data should be fitted on training examples, then applied consistently to new examples.</p><MentalModel>A useful representation preserves meaning: consistent features, positions, units and preparation for every example.</MentalModel></>;
+}
+
+function DataFour() {
+  return <><p>Data representation connects the real world to the task we want an AI model to perform.</p><div className={s.dataOverview}>{[
+    ['Start with a purpose', 'Estimate a house’s selling price. The task tells us what information may be useful.'],
+    ['Choose features and a target', 'Size, bedrooms and age are inputs. The recorded selling price is the target.'],
+    ['Bring examples together', 'Arrange sold houses in consistent rows and columns, pairing each input with its target.'],
+    ['Preserve meaning', 'Use the same feature order, units and preparation when representing a new house.'],
+  ].map(([title, copy], i) => <section className={s.relationshipPanel} key={title}><header><span>{i + 1}</span><h2>{title}</h2></header><p>{copy}</p></section>)}</div><p className={s.dataClosing}>The model receives a representation of information about a house. Our choices determine which clues it can use and which details it cannot see.</p><MentalModel final>Data representation turns real world information into consistent inputs for a specific task. Next comes the model that learns from those examples.</MentalModel></>;
+}
+
+const dataScreens = [DataOne, DataTwo, DataThree, DataFour];
+const dataTitles = [<>Give the information a <mark>purpose</mark></>, <>Bring <mark>examples together</mark></>, <>Give numbers <mark>meaning</mark></>, <>The <mark>big picture.</mark></>];
+const dataLabels = ['Give information a purpose', 'Bring examples together', 'Give numbers meaning', 'The big picture'];
+const dataNext = [ ['This is just one house. What happens when', 'we bring several examples together?'], ['Our examples now have a consistent structure.', 'How do we make sure the numbers carry the right meaning?'], ['We have useful information in a consistent form.', 'Let’s put the whole picture together.'], ['You now know how to represent examples for a task.', 'Next, we’ll explore how a model learns from them.'] ];
 const screens = [ScreenOne, ScreenTwo, ScreenThree, ScreenFour, ScreenFive];
 const stepLabels = ['Why mathematics?', 'Organizing information', 'Relationships and change', 'Uncertainty', 'The big picture'];
 
 export function LearnPage() {
   const [params, setParams] = useSearchParams();
   const requestedTopic = params.get('topic') ?? params.get('concept') ?? 'mathematics';
-  const isPlanned = requestedTopic !== 'mathematics';
+  const isData = requestedTopic === 'data-representation';
+  const isPlanned = requestedTopic !== 'mathematics' && !isData;
+  const topicTitle = isData ? 'Data Representation' : 'Mathematics';
+  const activeScreens = isData ? dataScreens : screens;
   const rawStep = Number(params.get('step') ?? '1');
-  const step = Number.isInteger(rawStep) && rawStep >= 1 && rawStep <= 5 ? rawStep : 1;
+  const step = Number.isInteger(rawStep) && rawStep >= 1 && rawStep <= activeScreens.length ? rawStep : 1;
   const headingRef = useRef<HTMLHeadingElement>(null);
   const navigationRef = useRef<HTMLButtonElement>(null);
   const [topicsOpen, setTopicsOpen] = useState(false);
   const [mathematicsOpen, setMathematicsOpen] = useState(!isPlanned);
-  const [upcomingOpen, setUpcomingOpen] = useState(false);
-  const Screen = screens[step - 1];
+  const [dataOpen, setDataOpen] = useState(isData);
+  const [blocksOpen, setBlocksOpen] = useState([true, false, false]);
+  const Screen = activeScreens[step - 1];
 
   useLayoutEffect(() => {
     setTopicsOpen(false);
-    if (!isPlanned) setMathematicsOpen(true);
+    if (!isPlanned) { setMathematicsOpen(!isData); setDataOpen(isData); setBlocksOpen(previous => [true, previous[1], previous[2]]); }
     headingRef.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [step, requestedTopic]);
 
-  const goToStep = (value: number) => setParams({ topic: 'mathematics', step: String(value) });
+  const goToStep = (value: number) => {
+    if (value === 0 && isData) setParams({ topic: 'mathematics', step: '5' });
+    else if (value === 6 && !isData) setParams({ topic: 'data-representation', step: '1' });
+    else setParams({ topic: requestedTopic, step: String(value) });
+  };
   const selectStep = () => {
     setTopicsOpen(false);
     headingRef.current?.focus({ preventScroll: true });
@@ -255,32 +315,33 @@ export function LearnPage() {
 
   return <main id="main-content" tabIndex={-1} className={s.learn}>
     <aside className={s.sidebar}>
-      <button ref={navigationRef} className={s.topicToggle} type="button" aria-expanded={topicsOpen} aria-controls="learn-topics" onClick={() => topicsOpen ? closeTopics() : setTopicsOpen(true)} onKeyDown={event => { if (event.key === 'Escape') closeTopics(); }}>Block 01 · Mathematics <span aria-hidden="true">{topicsOpen ? '−' : '+'}</span><span className="sr-only"> — Topic navigation</span></button>
+      <button ref={navigationRef} className={s.topicToggle} type="button" aria-expanded={topicsOpen} aria-controls="learn-topics" onClick={() => topicsOpen ? closeTopics() : setTopicsOpen(true)} onKeyDown={event => { if (event.key === 'Escape') closeTopics(); }}>AI Foundations / {topicTitle} <span aria-hidden="true">{topicsOpen ? '−' : '+'}</span><span className="sr-only"> — Topic navigation</span></button>
       <div id="learn-topics" className={`${s.topicNavigation} ${topicsOpen ? s.topicsOpen : ''}`} onKeyDown={event => { if (event.key === 'Escape' && topicsOpen) { event.stopPropagation(); closeTopics(); } }}>
         <h2>Learn</h2><p>A structured path from<br/>foundations to real AI systems.</p>
-        <nav className={s.block} aria-label="Block 01 topics">
-          <header><span aria-hidden="true">▣</span><div><b>Block 01</b><p>AI Engineering Foundations</p></div></header>
+        <div className={s.learningGroup}><b>Learning group 01</b><h3>AI Foundations</h3></div><nav className={s.block} aria-label="Block 01 topics">
+          <header><button className={s.blockControl} type="button" aria-expanded={blocksOpen[0]} aria-controls="foundation-topics" onClick={() => setBlocksOpen(v => [!v[0], v[1], v[2]])}><span aria-hidden="true">{blocksOpen[0] ? '−' : '+'}</span><span><b>Block 01</b><span>From Reality to Data</span></span></button></header><div id="foundation-topics" hidden={!blocksOpen[0]}>
           <div className={s.topicGroup}>
-            <button className={`${s.topicControl} ${!isPlanned ? s.currentTopic : ''}`} type="button" aria-expanded={mathematicsOpen} aria-controls="mathematics-steps" onClick={() => setMathematicsOpen(!mathematicsOpen)}><span>01</span><strong>Mathematics</strong><span aria-hidden="true">{mathematicsOpen ? '−' : '+'}</span></button>
-            <ol id="mathematics-steps" className={s.stepLinks} hidden={!mathematicsOpen}>{stepLabels.map((label, index) => <li key={label}><Link to={`/learn?topic=mathematics&step=${index + 1}`} aria-current={!isPlanned && step === index + 1 ? 'step' : undefined} onClick={selectStep}><span aria-hidden="true">{index + 1}</span>{label}</Link></li>)}</ol>
+            <button className={`${s.topicControl} ${!isPlanned && !isData ? s.currentTopic : ''}`} type="button" aria-expanded={mathematicsOpen} aria-controls="mathematics-steps" onClick={() => setMathematicsOpen(!mathematicsOpen)}><span>01</span><strong>Mathematics</strong><span aria-hidden="true">{mathematicsOpen ? '−' : '+'}</span></button>
+            <ol id="mathematics-steps" className={s.stepLinks} hidden={!mathematicsOpen}>{stepLabels.map((label, index) => <li key={label}><Link to={`/learn?topic=mathematics&step=${index + 1}`} aria-current={!isPlanned && !isData && step === index + 1 ? 'step' : undefined} onClick={selectStep}><span aria-hidden="true">{index + 1}</span>{label}</Link></li>)}</ol>
           </div>
-          <div className={s.upcomingGroup}>
-            <button className={s.upcomingControl} type="button" aria-expanded={upcomingOpen} aria-controls="upcoming-topics" onClick={() => setUpcomingOpen(!upcomingOpen)}>Upcoming topics · 9 planned <span aria-hidden="true">{upcomingOpen ? '−' : '+'}</span></button>
-            <ol id="upcoming-topics" hidden={!upcomingOpen}>{roadmapConcepts.slice(1).map(concept => <li key={concept.slug}><span className={s.plannedTopic} aria-disabled="true"><span>{concept.id}</span><span>{concept.title}<small>Planned</small></span></span></li>)}</ol>
-          </div>
+          <div className={s.topicGroup}>
+            <button className={`${s.topicControl} ${isData ? s.currentTopic : ''}`} type="button" aria-expanded={dataOpen} aria-controls="data-steps" onClick={() => setDataOpen(!dataOpen)}><strong>Data Representation</strong><span aria-hidden="true">{dataOpen ? '−' : '+'}</span></button>
+            <ol id="data-steps" className={s.stepLinks} hidden={!dataOpen}>{dataLabels.map((label, index) => <li key={label}><Link to={`/learn?topic=data-representation&step=${index + 1}`} aria-current={isData && step === index + 1 ? 'step' : undefined} onClick={selectStep}><span aria-hidden="true">{index + 1}</span>{label}</Link></li>)}</ol>
+          </div></div>
         </nav>
-        <p className={s.laterBlocks}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></svg> More learning blocks later</p>
+        {['Models and Mistakes', 'Learning and Improvement'].map((title, index) => <section className={s.block} key={title}><header><button className={s.blockControl} type="button" aria-expanded={blocksOpen[index + 1]} aria-controls={`planned-block-${index}`} onClick={() => setBlocksOpen(previous => previous.map((open, i) => i === index + 1 ? !open : open))}><span aria-hidden="true">{blocksOpen[index + 1] ? '-' : '+'}</span><span><b>Block 0{index + 2}</b><span>{title}</span></span></button></header><div className={s.blockPreview}>{(index === 0 ? ['Model', 'Loss'] : ['Gradient', 'Optimization']).map(name => <span className={s.plannedTopic} key={name} aria-disabled="true">{name}</span>)}<p id={`planned-block-${index}`} hidden={!blocksOpen[index + 1]}>These topics are planned.</p></div></section>)}
+        <p className={s.laterBlocks}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></svg> More learning groups later</p>
       </div>
     </aside>
-    <article className={s.lesson} data-step={step}>
-      <div className={s.lessonMeta} aria-label="Lesson context"><p><b>Block 01</b><span>/</span>Mathematics</p>{!isPlanned && <div className={s.stepStatus}><span>Step {step} of 5</span><span className={s.stepDots} aria-hidden="true">{screens.map((_, index) => <i className={index + 1 === step ? s.activeDot : ''} key={index}/>)}</span></div>}</div>
+    <article className={s.lesson} data-step={isData ? undefined : step}>
+      <div className={s.lessonMeta} aria-label="Lesson context"><p>AI Foundations<span>/</span><b>Block 01</b><span>/</span>{isPlanned ? "Upcoming topic" : topicTitle}</p>{!isPlanned && <div className={s.stepStatus}><span>Step {step} of {activeScreens.length}</span><span className={s.stepDots} aria-hidden="true">{activeScreens.map((_, index) => <i className={index + 1 === step ? s.activeDot : ''} key={index}/>)}</span></div>}</div>
       {isPlanned ? <><h1 ref={headingRef} tabIndex={-1}>This topic is planned.</h1><p>Mathematics for AI is available to explore. More topics are being developed.</p><Link className={s.continueButton} to="/learn?topic=mathematics&step=1">Explore Mathematics for AI <Arrow/></Link></> : <>
-        <h1 ref={headingRef} tabIndex={-1} className={step === 2 ? s.longTitle : ''}>{titles[step - 1]}</h1>
+        <h1 ref={headingRef} tabIndex={-1} className={!isData && step === 2 ? s.longTitle : ''}>{(isData ? dataTitles : titles)[step - 1]}</h1>
         <Screen/>
         <footer className={s.lessonFooter}>
-          <button type="button" className={s.backButton} disabled={step === 1} onClick={() => goToStep(step - 1)}><span aria-hidden="true">‹</span>Back</button>
-          <div className={s.nextThought}><b>Next</b><div>{nextCopy[step - 1].slice(0, -1).map(line => <p key={line}>{line}</p>)}<p className={s.nextQuestion}>{nextCopy[step - 1].at(-1)}</p></div></div>
-          <div className={s.continueWrap}><button type="button" className={s.continueButton} disabled={step === 5} aria-describedby={step === 5 ? 'next-topic-status' : undefined} onClick={() => goToStep(step + 1)}>{step === 5 ? 'Continue to Data Representation' : step === 4 ? 'See What You’ve Learned' : 'Continue'}<Arrow/></button>{step === 5 && <span id="next-topic-status">Next topic planned</span>}</div>
+          <button type="button" className={s.backButton} disabled={!isData && step === 1} onClick={() => goToStep(step - 1)}><span aria-hidden="true">‹</span>Back</button>
+          <div className={s.nextThought}><b>Next</b><div>{(isData ? dataNext : nextCopy)[step - 1].slice(0, -1).map(line => <p key={line}>{line}</p>)}<p className={s.nextQuestion}>{(isData ? dataNext : nextCopy)[step - 1].at(-1)}</p></div></div>
+          <div className={s.continueWrap}><button type="button" className={s.continueButton} disabled={isData && step === 4} aria-describedby={isData && step === 4 ? 'next-topic-status' : undefined} onClick={() => goToStep(step + 1)}>{!isData && step === 5 ? 'Continue to Data Representation' : isData && step === 4 ? 'Model - Coming soon' : 'Continue'}<Arrow/></button>{isData && step === 4 && <span id="next-topic-status">Next topic planned</span>}</div>
         </footer>
       </>}
     </article>

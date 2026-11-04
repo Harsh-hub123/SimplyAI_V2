@@ -1,3 +1,31 @@
+/* Learn content arrangement uses the existing page palette and typography. */
+.learningGroup { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--learn-border); }
+.learningGroup > b { color: var(--learn-cyan); font: 600 12px/1.4 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+.learningGroup h3 { margin: 4px 0 0; color: var(--learn-paper); font: 600 18px/1.3 var(--sans); }
+.block + .block { margin-top: 10px; }
+.blockControl { display: flex; align-items: flex-start; gap: 13px; width: 100%; padding: 0; border: 0; background: transparent; color: var(--learn-copy); text-align: left; cursor: pointer; }
+.blockControl > span:first-child { color: var(--learn-cyan); font-size: 23px; }
+.blockControl > span:last-child > span { display: block; margin-top: 3px; font: 400 13.5px/1.4 var(--sans); }
+.blockPreview { padding: 5px 16px; }
+.blockPreview .plannedTopic { display: block; min-height: 32px; }
+.blockPreview p { font-size: 12px; }
+.dataHouse { padding: 18px; border: 1px solid var(--learn-border); border-radius: 9px; background: var(--learn-panel); }
+.dataHouse img { display: block; width: 100%; aspect-ratio: 3 / 1.3; object-fit: cover; border-radius: 7px; }
+.dataHouse figcaption { margin-top: 5px; font-style: italic; font-size: 14px; }
+.dataHouse h3 { color: var(--learn-cyan); text-transform: uppercase; font: 600 17px/1.4 var(--sans); margin: 10px 0 0; }
+.dataHouse dl { margin: 0; }
+.dataHouse dl > div { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--learn-border); padding: 3px 0; }
+.dataHouse dd { margin: 0; }
+.dataTarget { display: flex; flex-direction: column; margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--learn-border); }
+.dataTarget b { color: var(--learn-gold); text-transform: uppercase; }
+.dataTarget strong { color: var(--learn-gold); font: 600 30px/1.2 var(--display); }
+.dataClosing { margin-top: 20px !important; }
+.dataTable { width: 100%; border-collapse: collapse; text-align: left; }
+.dataTable caption { text-align: left; padding-bottom: 10px; }
+.dataTable th, .dataTable td { padding: 12px; border-bottom: 1px solid var(--learn-border); white-space: nowrap; }
+.dataTable th { color: var(--learn-cyan); }
+.dataTable td:last-child { color: var(--learn-gold); }
+.dataOverview { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; }
 /* Screen 1 is the single colour reference for every Learn screen. */
 /* Clip without creating a scroll container, so Learn's sticky context follows the document. */
 :global(.app-shell):has(.learn) { overflow: clip; }
@@ -626,54 +654,76 @@
 .screenFour { min-width: 0; }
 .screenFour p, .screenFour li { font: 400 17px/1.55 var(--sans); }
 .screenFour p { margin: 0 0 12px; }
-.uncertaintyIntro { max-width: 100ch; }
+.uncertaintyIntro { max-width: 86ch; }
+.uncertaintyIntro > p { margin-bottom: 8px; }
+.uncertaintyIntro ul { display: flex; flex-wrap: wrap; column-gap: 28px; row-gap: 4px; margin: 3px 0 12px; padding-left: 20px; }
+.uncertaintyBridge { margin: 6px 0 10px; }
+.uncertaintyBridge p { margin: 0; }
 .screenFour .uncertaintyPremise { color: var(--learn-gold); font-weight: 650; }
-.screenFour .uncertaintyLabel { margin: 24px 0 11px; color: var(--learn-cyan); font: 600 14px/1.4 var(--sans); letter-spacing: .09em; text-transform: uppercase; }
-.uncertaintyPanels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 16px; align-items: stretch; }
+.screenFour .uncertaintyLabel { margin: 18px 0 10px; color: var(--learn-cyan); font: 600 14px/1.4 var(--sans); letter-spacing: .09em; text-transform: uppercase; }
+.uncertaintyPanels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 18px; align-items: stretch; }
 .uncertaintyPanel { min-width: 0; padding: 20px; border: 1px solid var(--learn-border); border-radius: 9px; background: var(--learn-panel); }
-.uncertaintyPanel > header { display: flex; align-items: baseline; gap: 18px; margin-bottom: 17px; }
+.uncertaintyPanel > header { display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px; }
 .uncertaintyPanel > header > span { flex: 0 0 auto; color: var(--learn-cyan); font: 600 21px/1.3 var(--sans); }
 .uncertaintyPanel h2 { margin: 0; color: var(--learn-paper); font: 600 27px/1.18 var(--display); }
 .uncertaintyPanel > p:last-child { margin-bottom: 0; }
-.screenFour .initialEstimates { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; margin: 14px 0 16px; }
+.screenFour .initialEstimates { margin: 12px 0 14px; padding: 14px; border: 1px solid var(--learn-border); border-radius: 8px; background: rgba(3, 26, 39, .35); }
+.estimateMedia { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px; }
 .dogPortrait { flex: 0 0 132px; width: 132px; aspect-ratio: 22 / 25; overflow: hidden; border-radius: 6px; background: var(--learn-raised); }
 .dogPortrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; transform: scale(2.65); transform-origin: 50% 35%; }
-.estimateChart { flex: 1 1 210px; min-width: 0; }
+.estimateChart { flex: 1 1 190px; min-width: 0; }
 .screenFour .bars { font-size: 16px; }
 .screenFour .bars > div { grid-template-columns: 35px minmax(0, 1fr); }
 .screenFour .bars dd { grid-template-columns: minmax(0, 1fr) 44px; }
 .screenFour .track { height: 13px; }
 .screenFour .track > span { min-width: 0; }
+.screenFour .bars dd > span:last-child { color: var(--learn-cyan); font-weight: 500; }
+.screenFour .bars > div:nth-child(2) dd > span:last-child { color: #3592f1; }
+.initialEstimates .bars > div:nth-child(3) dd > span:last-child { color: #8f7bea; }
 .initialEstimates .bars > div { grid-template-columns: 1fr; gap: 3px; margin-top: 0; margin-bottom: 8px; }
 .screenFour .estimatesCaption { margin: 9px 0 0; font-size: 13px; line-height: 1.4; color: #b4c6d1; }
-.screenFour .predictedActual { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 8px 12px; margin-bottom: 16px; border: 1px solid var(--learn-border); border-radius: 6px; color: var(--learn-paper); font-size: 16px; }
+.screenFour .predictedActual { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding-top: 9px; margin-top: 11px; border-top: 1px solid var(--learn-border); color: var(--learn-paper); font: 500 17px/1.4 var(--sans); }
 .predictedActual strong { color: var(--learn-cyan); font-weight: 600; }
 .predictedActual > span:last-child strong { color: var(--learn-gold); }
 .screenFour .uncertaintyEmphasis { color: var(--learn-cyan); font-weight: 600; }
-.probabilityCases { display: grid; gap: 12px; margin: 12px 0 16px; }
-.uncertaintyCase { min-width: 0; padding: 12px 14px; border: 1px solid var(--learn-border); border-radius: 7px; background: rgba(3, 26, 39, .3); }
+.screenFour .probabilityCases { margin: 12px 0 16px; padding: 14px; border: 1px solid var(--learn-border); border-radius: 8px; background: rgba(3, 26, 39, .35); }
+.uncertaintyCase { min-width: 0; }
+.uncertaintyCase + .uncertaintyCase { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--learn-border); }
 .uncertaintyCase h3 { margin: 0 0 10px; color: var(--learn-paper); font: 600 16px/1.45 var(--sans); }
+.uncertaintyCase h3 > span { color: var(--learn-cyan); }
 .screenFour .uncertaintyCase p { margin: 10px 0 0; font-size: 16px; }
-.uncertaintyInsights { margin-top: 14px; padding: 0 18px; border: 1px solid var(--learn-border); border-radius: 9px; background: var(--learn-panel); }
-.uncertaintyInsight { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 20px; align-items: start; padding: 18px 0; }
+.uncertaintyInsights { margin-top: 16px; padding: 0 20px; border: 1px solid var(--learn-border); border-radius: 9px; background: var(--learn-panel); }
+.uncertaintyInsight { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 18px; align-items: start; padding: 20px 0; }
 .uncertaintyInsight + .uncertaintyInsight { border-top: 1px solid var(--learn-border); }
-.uncertaintyInsight > svg { width: 34px; height: 36px; color: var(--learn-cyan); }
-.uncertaintyInsight h2 { margin: 0 0 6px; color: var(--learn-cyan); font: 600 18px/1.4 var(--sans); }
-.uncertaintyInsight:first-child h2 { font-size: 14px; letter-spacing: .07em; text-transform: uppercase; }
-.uncertaintyInsight p { margin-bottom: 7px; }
+.uncertaintyInsight > svg { width: 38px; height: 40px; color: var(--learn-cyan); }
+.uncertaintyInsight > div { min-width: 0; padding-left: 18px; border-left: 1px solid var(--learn-border); }
+.uncertaintyInsight h2 { margin: 0 0 6px; color: var(--learn-cyan); font: 600 19px/1.4 var(--sans); }
+.uncertaintyInsight:first-child h2 { font-size: 18px; letter-spacing: .04em; text-transform: uppercase; }
+.uncertaintyInsight p { margin-bottom: 8px; }
 .uncertaintyInsight p:last-child { margin-bottom: 0; }
-.screenFour .mentalModel { margin-top: 14px; }
+.screenFour .mentalModel { margin-top: 14px; padding: 20px 24px; gap: 20px; }
 .screenFour .mentalModel > svg { width: 38px; }
-.screenFour .mentalModel p { margin: 4px 0 0; color: var(--learn-paper); font: 400 17px/1.5 var(--sans); }
-.uncertaintyTakeaway { color: var(--learn-gold); font-weight: 600; }
+.screenFour .mentalModel > div { padding-left: 20px; }
+.screenFour .mentalModel p { margin: 5px 0 0; color: var(--learn-paper); font: 400 17px/1.55 var(--sans); }
+.uncertaintyTakeaway { display: block; margin-bottom: 5px; color: var(--learn-gold); font-weight: 600; }
+.lesson[data-step="4"] .lessonFooter { margin-top: 18px; padding-top: 18px; }
+.lesson[data-step="4"] .nextThought p { font-size: 17px; line-height: 1.5; }
+.lesson[data-step="4"] .nextThought .nextQuestion { font-size: 18px; }
 @media (max-width: 600px) {
   .screenFour p, .screenFour li { font-size: 16px; }
   .uncertaintyPanel { padding: 16px; }
   .uncertaintyPanel > header { gap: 12px; }
   .uncertaintyPanel h2 { font-size: 25px; }
+  .screenFour .initialEstimates, .screenFour .probabilityCases { padding: 12px; }
+  .screenFour .predictedActual { font-size: 16px; }
   .uncertaintyInsights { padding-inline: 14px; }
-  .uncertaintyInsight { grid-template-columns: 32px minmax(0, 1fr); gap: 14px; padding-block: 16px; }
+  .uncertaintyInsight { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; padding-block: 18px; }
   .uncertaintyInsight > svg { width: 32px; height: 34px; }
+  .uncertaintyInsight > div { padding-left: 14px; }
+  .screenFour .mentalModel { padding: 16px; gap: 14px; }
   .screenFour .mentalModel > svg { width: 32px; }
+  .screenFour .mentalModel > div { padding-left: 14px; }
   .screenFour .mentalModel p { font-size: 16px; }
+  .lesson[data-step="4"] .nextThought p { font-size: 16px; }
+  .lesson[data-step="4"] .nextThought .nextQuestion { font-size: 17px; }
 }

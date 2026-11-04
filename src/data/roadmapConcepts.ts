@@ -69,7 +69,7 @@ export const roadmapConcepts: RoadmapConcept[] = [
     keyLabel: 'The important idea is:',
     keyText: ['The model does not receive the real-world object itself. It receives a representation of information about it.', 'And different tasks may need different representations.'],
     deeper: ['Later, we will explore how images, text, sound, and other forms of information are represented for AI systems.'],
-    nextConcept: 'model', lessonStatus: 'planned', learnRoute: '/learn?concept=data-representation',
+    nextConcept: 'model', lessonStatus: 'available', learnRoute: '/learn?topic=data-representation&step=1',
   },
   {
     id: '03', slug: 'model', order: 3, mapTitle: 'Model', title: 'Model', territory: 'learning', territoryLabel: 'LEARNING MECHANISM',
