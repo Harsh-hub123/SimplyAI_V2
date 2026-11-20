@@ -1,4 +1,25 @@
 /* Learn content arrangement uses the existing page palette and typography. */
+.meaningScreen { min-width: 0; }
+.meaningScreen > .labeledVector { margin: 16px 0; }
+.meaningScreen > .relationshipPanel { margin-top: 18px; }
+.meaningScreen .relationshipPanel h2 { margin-bottom: 12px; }
+.meaningComparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 12px; margin: 16px 0; }
+.meaningComparison > figure { min-width: 0; padding: 14px; border: 1px solid var(--learn-border); border-radius: 7px; background: var(--learn-raised); }
+.meaningComparison figcaption { font: 600 14px/1.4 var(--sans); }
+.meaningCorrect figcaption { color: var(--learn-cyan); }
+.meaningSwapped figcaption { color: var(--learn-gold); }
+.meaningVector { display: block; margin: 10px 0; color: var(--learn-paper); font: 600 23px/1.3 var(--sans); }
+.meaningComparison dl { margin: 0; }
+.meaningComparison dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border-top: 1px solid var(--learn-border); font-size: 15px; }
+.meaningComparison dd { margin: 0; color: var(--learn-paper); font-weight: 600; }
+.meaningCheck { min-width: 0; margin: 20px 0 0; padding: 16px 20px; border: 1px solid var(--learn-border); border-radius: 9px; background: var(--learn-panel); }
+.meaningCheck legend { padding: 0 7px; color: var(--learn-cyan); font: 600 14px/1.4 var(--sans); }
+.meaningOptions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.meaningOptions label { display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--learn-border); border-radius: 6px; cursor: pointer; }
+.meaningOptions label:has(input:checked) { border-color: var(--learn-cyan); background: var(--learn-raised); }
+.meaningOptions label:focus-within { outline: 2px solid var(--learn-paper); outline-offset: 3px; }
+.meaningOptions input { margin: 0; accent-color: var(--learn-cyan); }
+.meaningFeedback { font-size: 15px; }
 .learningGroup { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--learn-border); }
 .learningGroup > b { color: var(--learn-cyan); font: 600 12px/1.4 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
 .learningGroup h3 { margin: 4px 0 0; color: var(--learn-paper); font: 600 18px/1.3 var(--sans); }

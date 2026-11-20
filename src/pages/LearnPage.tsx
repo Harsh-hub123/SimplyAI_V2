@@ -253,9 +253,36 @@ function DataTwo() {
 }
 
 function DataThree() {
-  return <><p>A list of numbers is useful only when we know what each number represents.</p><Vector labeled/>
-    <div className={s.teachingPair}><section className={s.relationshipPanel}><h2>Keep the meaning consistent</h2><p>The first position always means size in square feet, the second means bedrooms, and the third means age in years.</p><p>Changing the order or mixing square feet with square metres would change what the model receives.</p></section><section className={s.relationshipPanel}><h2>Choose a representation for the task</h2><p>Location can help too. We need a consistent way to encode it, such as separate indicators for different neighbourhoods.</p><p>An arbitrary number for a neighbourhood does not mean one location is “twice” another.</p></section></div>
-    <h2 className={s.editorialHeading}>Use information available when predicting</h2><p>For a new house, we do not know the selling price yet. It is the target, rather than an input feature.</p><p>Missing values and different numerical scales also need care. Any preparation learned from data should be fitted on training examples, then applied consistently to new examples.</p><MentalModel>A useful representation preserves meaning: consistent features, positions, units and preparation for every example.</MentalModel></>;
+  const [answer, setAnswer] = useState<string | null>(null);
+  return <div className={s.meaningScreen}>
+    <p>A list of numbers is useful only when we know what each number represents.</p><Vector labeled/>
+    <p>In our representation, these values describe a house’s size, number of bedrooms, and age.</p>
+    <section className={s.relationshipPanel} aria-labelledby="consistent-meaning-heading">
+      <h2 id="consistent-meaning-heading">Keep the meaning consistent</h2>
+      <p>Our chosen order is: <strong>Size (sq ft) → Bedrooms → Age (years)</strong></p>
+      <p>For a house with 900 sq ft, 2 bedrooms, and an age of 12 years, the correct representation is:</p>
+      <div className={s.meaningComparison}>
+        {[{ title: 'Correct representation', values: [900, 2, 12], correct: true }, { title: 'Incorrect under our chosen order', values: [900, 12, 2], correct: false }].map(example => <figure key={example.title} className={example.correct ? s.meaningCorrect : s.meaningSwapped}>
+          <figcaption>{example.correct ? '✓ ' : '↔ '}{example.title}</figcaption>
+          <strong className={s.meaningVector}>[{example.values.join(', ')}]</strong>
+          <dl>{example.values.map((value, index) => <div key={index}><dt>{['Size (sq ft)', 'Bedrooms', 'Age (years)'][index]}</dt><dd>{value}</dd></div>)}</dl>
+        </figure>)}
+      </div>
+      <p>Writing <strong>[900, 12, 2]</strong> swaps the bedroom and age values. Under our chosen feature order, the model receives different information: 12 bedrooms and an age of 2 years, rather than the intended house.</p>
+      <p>The same principle applies to units. If size is measured in square feet, we should not suddenly provide a value measured in square metres as though it were square feet.</p>
+    </section>
+    <div className={s.teachingPair}>
+      <section className={s.relationshipPanel}><h2>Choose information for the task</h2><p>Not every detail about a house will be useful for estimating its price.</p><p>Size, location, age, and condition may provide useful clues. The information we choose determines what the model can work with.</p><p>Some details, such as location, also need to be represented in a suitable form. We’ll explore how to do that later.</p></section>
+      <section className={s.relationshipPanel}><h2>Use information available when predicting</h2><p>For a new house, we don’t know its selling price yet.</p><p>That is the value we want to predict, so we cannot provide it as an input.</p><p>We must choose features that will be available when the prediction is made.</p></section>
+    </div>
+    <MentalModel><strong>A useful representation preserves meaning.</strong><span className={s.mentalSupporting}>Every example must follow a consistent feature structure, and the inputs must be available when we make a prediction.</span></MentalModel>
+    <fieldset className={s.meaningCheck} aria-describedby="meaning-check-question">
+      <legend>Optional understanding check</legend>
+      <p id="meaning-check-question">A house has 1,500 sq ft, 3 bedrooms, and is 5 years old.<br/>Using the order <strong>[Size, Bedrooms, Age]</strong>, which representation is correct?</p>
+      <div className={s.meaningOptions}>{['[1500, 5, 3]', '[1500, 3, 5]', '[3, 1500, 5]'].map((value, index) => <label key={value}><input type="radio" name="meaning-answer" value={value} checked={answer === value} onChange={() => setAnswer(value)}/><span>{['A', 'B', 'C'][index]}. {value}</span></label>)}</div>
+      <p className={s.meaningFeedback} role="status" aria-live="polite" aria-atomic="true">{answer === null ? 'Choose an answer to check your understanding, or continue when you’re ready.' : answer === '[1500, 3, 5]' ? 'Correct. The first value represents size, the second bedrooms, and the third age.' : 'Not quite. Look at the chosen order: size comes first, bedrooms second, and age third.'}</p>
+    </fieldset>
+  </div>;
 }
 
 function DataFour() {
