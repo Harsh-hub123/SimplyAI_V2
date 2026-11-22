@@ -254,6 +254,12 @@ function DataTwo() {
 
 function DataThree() {
   const [answer, setAnswer] = useState<string | null>(null);
+  const answers = ['[1500, 5, 3]', '[1500, 3, 5]', '[3, 1500, 5]'];
+  const feedback = [
+    "Not quite. You've swapped the bedroom and age values. The second position represents bedrooms, and the third represents age. Try again.",
+    'Correct! Each value is in its intended position: 1,500 sq ft, 3 bedrooms, and 5 years.',
+    'Not quite. The first position represents size, not bedrooms. Check the feature order and try again.',
+  ];
   return <div className={s.meaningScreen}>
     <p>A list of numbers is useful only when we know what each number represents.</p><Vector labeled/>
     <p>In our representation, these values describe a house’s size, number of bedrooms, and age.</p>
@@ -264,11 +270,18 @@ function DataThree() {
       <div className={s.meaningComparison}>
         {[{ title: 'Correct representation', values: [900, 2, 12], correct: true }, { title: 'Incorrect under our chosen order', values: [900, 12, 2], correct: false }].map(example => <figure key={example.title} className={example.correct ? s.meaningCorrect : s.meaningSwapped}>
           <figcaption>{example.correct ? '✓ ' : '↔ '}{example.title}</figcaption>
-          <strong className={s.meaningVector}>[{example.values.join(', ')}]</strong>
-          <dl>{example.values.map((value, index) => <div key={index}><dt>{['Size (sq ft)', 'Bedrooms', 'Age (years)'][index]}</dt><dd>{value}</dd></div>)}</dl>
+          <div className={`${s.labeledVector} ${s.meaningVector}`} role="img" aria-label={`[${example.values.join(', ')}]: ${example.values[0]} square feet, ${example.values[1]} bedrooms, ${example.values[2]} years old.${example.correct ? '' : ' Bedroom and age values are swapped for the intended house.'}`}>
+            <span className={s.vectorBracket} aria-hidden="true">[</span>
+            {example.values.map((value, index) => <span key={index} className={s.meaningPosition} aria-hidden="true">
+              {index > 0 && <span className={s.meaningComma}>,</span>}
+              <span className={`${s.vectorValue} ${!example.correct && index > 0 ? s.swappedValue : ''}`}>{value}</span>
+              <small>{['Size', 'Bedrooms', 'Age'][index]}<span>{['(sq ft)', '\u00a0', '(years)'][index]}</span></small>
+            </span>)}
+            <span className={s.vectorBracket} aria-hidden="true">]</span>
+          </div>
         </figure>)}
       </div>
-      <p>Writing <strong>[900, 12, 2]</strong> swaps the bedroom and age values. Under our chosen feature order, the model receives different information: 12 bedrooms and an age of 2 years, rather than the intended house.</p>
+      <p>Under our chosen feature order, swapping the values changes the house being described. The model receives information about 12 bedrooms and an age of 2 years instead of the intended house.</p>
       <p>The same principle applies to units. If size is measured in square feet, we should not suddenly provide a value measured in square metres as though it were square feet.</p>
     </section>
     <div className={s.teachingPair}>
@@ -279,8 +292,8 @@ function DataThree() {
     <fieldset className={s.meaningCheck} aria-describedby="meaning-check-question">
       <legend>Optional understanding check</legend>
       <p id="meaning-check-question">A house has 1,500 sq ft, 3 bedrooms, and is 5 years old.<br/>Using the order <strong>[Size, Bedrooms, Age]</strong>, which representation is correct?</p>
-      <div className={s.meaningOptions}>{['[1500, 5, 3]', '[1500, 3, 5]', '[3, 1500, 5]'].map((value, index) => <label key={value}><input type="radio" name="meaning-answer" value={value} checked={answer === value} onChange={() => setAnswer(value)}/><span>{['A', 'B', 'C'][index]}. {value}</span></label>)}</div>
-      <p className={s.meaningFeedback} role="status" aria-live="polite" aria-atomic="true">{answer === null ? 'Choose an answer to check your understanding, or continue when you’re ready.' : answer === '[1500, 3, 5]' ? 'Correct. The first value represents size, the second bedrooms, and the third age.' : 'Not quite. Look at the chosen order: size comes first, bedrooms second, and age third.'}</p>
+      <div className={s.meaningOptions}>{answers.map((value, index) => <label key={value}><input type="radio" name="meaning-answer" value={value} checked={answer === value} aria-describedby={answer === value ? 'meaning-answer-feedback' : undefined} onChange={() => setAnswer(value)}/><span>{['A', 'B', 'C'][index]}. {value}</span></label>)}</div>
+      <p id="meaning-answer-feedback" className={s.meaningFeedback} role="status" aria-live="polite" aria-atomic="true">{answer === null ? 'Choose an answer to check your understanding, or continue when you’re ready.' : <><b>Answer {['A', 'B', 'C'][answers.indexOf(answer)]}</b><span>{feedback[answers.indexOf(answer)]}</span></>}</p>
     </fieldset>
   </div>;
 }
