@@ -1,4 +1,17 @@
 /* Learn content arrangement uses the existing page palette and typography. */
+.conclusionScreen { min-width: 0; }
+.conclusionScreen > section { margin-top: 24px; }
+.conclusionScreen .editorialHeading { margin: 0 0 14px; }
+.conclusionComparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px; }
+.conclusionComparison > figure { min-width: 0; }
+.conclusionMedia { display: block; width: 100%; height: clamp(140px, 13vw, 190px); border-radius: 7px; object-fit: cover; }
+.representedMedia { display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--learn-panel); }
+.representedMedia .labeledVector { margin: 0; }
+.conclusionComparison figcaption { margin-top: 12px; }
+.conclusionComparison figcaption b { color: var(--learn-cyan); font-weight: 600; }
+.conclusionComparison figcaption p { margin-top: 4px; }
+.conclusionExplanation { margin-top: 18px; }
+.conclusionScreen li + li { margin-top: 6px; }
 .meaningScreen { min-width: 0; }
 .meaningScreen > .labeledVector { margin: 16px 0; }
 .meaningScreen > .relationshipPanel { margin-top: 18px; }

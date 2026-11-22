@@ -299,18 +299,41 @@ function DataThree() {
 }
 
 function DataFour() {
-  return <><p>Data representation connects the real world to the task we want an AI model to perform.</p><div className={s.dataOverview}>{[
-    ['Start with a purpose', 'Estimate a house’s selling price. The task tells us what information may be useful.'],
-    ['Choose features and a target', 'Size, bedrooms and age are inputs. The recorded selling price is the target.'],
-    ['Bring examples together', 'Arrange sold houses in consistent rows and columns, pairing each input with its target.'],
-    ['Preserve meaning', 'Use the same feature order, units and preparation when representing a new house.'],
-  ].map(([title, copy], i) => <section className={s.relationshipPanel} key={title}><header><span>{i + 1}</span><h2>{title}</h2></header><p>{copy}</p></section>)}</div><p className={s.dataClosing}>The model receives a representation of information about a house. Our choices determine which clues it can use and which details it cannot see.</p><MentalModel final>Data representation turns real world information into consistent inputs for a specific task. Next comes the model that learns from those examples.</MentalModel></>;
+  return <div className={s.conclusionScreen}>
+    <p>Throughout this topic, we have seen how information about the real world can be organized for a particular task.</p>
+    <p>But data representation is more than arranging numbers into rows and columns.</p>
+    <p><strong>It is about deciding what information a model gets to work with and how that information is represented.</strong></p>
+    <section aria-labelledby="model-receives-heading">
+      <h2 id="model-receives-heading" className={s.editorialHeading}>What does the model actually receive?</h2>
+      <div className={s.conclusionComparison}>
+        <figure>
+          <img className={s.conclusionMedia} src={`${import.meta.env.BASE_URL}images/learn/house-dusk.png`} alt="A modern two-storey house with warm illuminated windows at dusk"/>
+          <figcaption><b>The real-world house</b><p>Size, bedrooms, age, location, condition, garden, surroundings and many other details.</p></figcaption>
+        </figure>
+        <figure>
+          <div className={`${s.conclusionMedia} ${s.representedMedia}`}><Vector labeled/></div>
+          <figcaption><b>The represented house</b><p>Only the information we have chosen to provide.</p></figcaption>
+        </figure>
+      </div>
+      <div className={s.conclusionExplanation}>
+        <p>The model receives the representation, not the house itself.</p>
+        <p>If location is not included, the model cannot directly use that information. If the feature order is inconsistent, the information it receives may have the wrong meaning.</p>
+        <p>This is why choosing relevant information and representing it consistently matters.</p>
+      </div>
+    </section>
+    <section aria-labelledby="put-understanding-together">
+      <h2 id="put-understanding-together" className={s.editorialHeading}>Put your understanding together</h2>
+      <p>We now have a way to:</p>
+      <ul><li>Choose information based on a task.</li><li>Distinguish inputs from the value we want to predict.</li><li>Organize examples into a dataset.</li><li>Preserve the meaning of information across examples.</li></ul>
+    </section>
+    <MentalModel final><strong>Data representation turns real-world information into clear, consistent clues that a model can learn from.</strong></MentalModel>
+  </div>;
 }
 
 const dataScreens = [DataOne, DataTwo, DataThree, DataFour];
 const dataTitles = [<>Give the information a <mark>purpose</mark></>, <>Bring <mark>examples together</mark></>, <>Give numbers <mark>meaning</mark></>, <>The <mark>big picture.</mark></>];
 const dataLabels = ['Give information a purpose', 'Bring examples together', 'Give numbers meaning', 'The big picture'];
-const dataNext = [ ['This is just one house. What happens when', 'we bring several examples together?'], ['Our examples now have a consistent structure.', 'How do we make sure the numbers carry the right meaning?'], ['We have useful information in a consistent form.', 'Let’s put the whole picture together.'], ['You now know how to represent examples for a task.', 'Next, we’ll explore how a model learns from them.'] ];
+const dataNext = [ ['This is just one house. What happens when', 'we bring several examples together?'], ['Our examples now have a consistent structure.', 'How do we make sure the numbers carry the right meaning?'], ['We have useful information in a consistent form.', 'Let’s put the whole picture together.'], ['We have seen how to turn real-world information into meaningful examples for a task.', 'Next, we’ll explore how a model learns from these examples.'] ];
 const screens = [ScreenOne, ScreenTwo, ScreenThree, ScreenFour, ScreenFive];
 const stepLabels = ['Why mathematics?', 'Organizing information', 'Relationships and change', 'Uncertainty', 'The big picture'];
 
