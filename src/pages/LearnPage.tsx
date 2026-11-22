@@ -10,7 +10,7 @@ const nextCopy = [
   ['Now we can organize information mathematically. But AI is not only about storing numbers.', 'How can mathematics help us describe relationships and change?'],
   ['Mathematics helps us organize information, describe relationships and understand change.', 'But how does it help when the answer is uncertain?'],
   ["We’ve now met four different roles mathematics plays in AI.", 'Let’s put the whole picture together.'],
-  ['You now have the language. But there is still an important question:', 'How does the real world become something a model can work with?'],
+  ['We have seen how mathematics helps us represent and organize information.', 'Next, we’ll explore how to turn real-world information into meaningful data for a specific task.'],
 ];
 
 function MentalModel({ children, final = false }: { children: React.ReactNode; final?: boolean }) {
@@ -214,11 +214,22 @@ function ScreenFour() {
 }
 
 function ScreenFive() {
+  const [explanationOpen, setExplanationOpen] = useState(false);
   return <>
-    <p className={s.summaryIntro}>We have seen four important roles mathematics plays in AI. Together, they give AI a precise language<br className={s.wideOnly}/> for working with information, relationships, change and uncertainty.</p>
+    <div className={s.summaryIntro}>
+      <p>Throughout this topic, we have seen that mathematics is more than numbers and formulas.</p>
+      <p>It gives us ways to represent information, describe relationships, understand change and reason about uncertainty.</p>
+      <p><strong>Together, these ideas form an important foundation for understanding how AI works.</strong></p>
+    </div>
     <BigPicture/>
-    <div className={s.reflections}><aside><LineIcon name="feedback"/><div><h2>You don’t need to master the formulas yet.</h2><p>At this stage, the important thing is that when mathematics appears later in AI, it no longer feels disconnected. You know why it is there.</p></div></aside><aside><LineIcon name="why"/><div><p>Before moving on, can you explain in your own words why AI needs mathematics?</p><p className={s.thinkingPrompt}>Take a moment to think about it...</p></div></aside></div>
-    <MentalModel final><mark>Mathematics gives AI a precise language</mark> for working with information, relationships, change and uncertainty.</MentalModel>
+    <div className={s.reflections}>
+      <aside><LineIcon name="feedback"/><div><h2>You don’t need to master the formulas yet.</h2><p>For now, focus on understanding what mathematics helps us do and why it matters in AI.</p><p>As we move forward, we’ll revisit these ideas and gradually understand the mathematics behind them.</p></div></aside>
+      <aside><LineIcon name="why"/><div><p>Before moving on, can you explain in your own words why AI needs mathematics?</p><p className={s.thinkingPrompt}>Take a moment to think about it...</p>
+        <button className={s.reflectionToggle} type="button" aria-expanded={explanationOpen} aria-controls="mathematics-possible-explanation" onClick={() => setExplanationOpen(!explanationOpen)}>View a possible explanation <span aria-hidden="true">{explanationOpen ? '−' : '+'}</span></button>
+        <p id="mathematics-possible-explanation" className={s.reflectionExplanation} hidden={!explanationOpen}>Mathematics helps AI represent real-world information, describe relationships between inputs and outputs, understand how changes affect results, and reason about uncertainty.</p>
+      </div></aside>
+    </div>
+    <MentalModel final><mark>Mathematics is the language</mark> through which AI represents information, describes relationships, understands change and reasons about uncertainty.</MentalModel>
   </>;
 }
 

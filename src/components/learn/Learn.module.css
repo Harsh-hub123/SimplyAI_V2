@@ -1,4 +1,9 @@
 /* Learn content arrangement uses the existing page palette and typography. */
+.summaryCard .summaryExampleLabel { margin-bottom: 8px; color: var(--learn-cyan); font-weight: 600; }
+.summaryCard .summaryExampleNote { margin-top: 8px; }
+.reflectionToggle { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 9px 0; border: 0; background: none; color: var(--learn-cyan); font: 600 16px/1.4 var(--sans); text-align: left; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.reflectionToggle > span { text-decoration: none; }
+.reflections .reflectionExplanation { margin: 8px 0 0; }
 .conclusionScreen { min-width: 0; }
 .conclusionScreen > section { margin-top: 24px; }
 .conclusionScreen .editorialHeading { margin: 0 0 14px; }
