@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { LineIcon } from '../components/Icons';
 import { Arrow, Bars, BigPicture, InformationVisual, lessonImage, Matrix, Vector } from '../components/learn/LessonVisuals';
 import s from '../components/learn/Learn.module.css';
+import { BlockOneExercise, ExerciseEntry, exerciseRoute } from '../components/learn/BlockOneExercise';
 
 const titles = [<>Why does AI need <mark>mathematics</mark>?</>, <>How do we <mark>organize information</mark> for an AI model?</>, <>Understanding <mark>relationships and change</mark></>, <>A prediction is <mark>not the truth.</mark></>, <>The <mark>big picture.</mark></>];
 const nextCopy = [
@@ -350,10 +351,11 @@ const stepLabels = ['Why mathematics?', 'Organizing information', 'Relationships
 
 export function LearnPage() {
   const [params, setParams] = useSearchParams();
-  const requestedTopic = params.get('topic') ?? params.get('concept') ?? 'mathematics';
+  const isExercise = params.get('exercise') === 'delivery-time';
+  const requestedTopic = isExercise ? 'block-1-exercise' : params.get('topic') ?? params.get('concept') ?? 'mathematics';
   const isData = requestedTopic === 'data-representation';
-  const isPlanned = requestedTopic !== 'mathematics' && !isData;
-  const topicTitle = isData ? 'Data Representation' : 'Mathematics';
+  const isPlanned = requestedTopic !== 'mathematics' && !isData && !isExercise;
+  const topicTitle = isExercise ? 'Block 1 application' : isData ? 'Data Representation' : 'Mathematics';
   const activeScreens = isData ? dataScreens : screens;
   const rawStep = Number(params.get('step') ?? '1');
   const step = Number.isInteger(rawStep) && rawStep >= 1 && rawStep <= activeScreens.length ? rawStep : 1;
@@ -367,7 +369,7 @@ export function LearnPage() {
 
   useLayoutEffect(() => {
     setTopicsOpen(false);
-    if (!isPlanned) { setMathematicsOpen(!isData); setDataOpen(isData); setBlocksOpen(previous => [true, previous[1], previous[2]]); }
+    if (!isPlanned) { setMathematicsOpen(!isData && !isExercise); setDataOpen(isData); setBlocksOpen(previous => [true, previous[1], previous[2]]); }
     headingRef.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [step, requestedTopic]);
@@ -395,23 +397,26 @@ export function LearnPage() {
         <div className={s.learningGroup}><b>Learning group 01</b><h3>AI Foundations</h3></div><nav className={s.block} aria-label="Block 01 topics">
           <header><button className={s.blockControl} type="button" aria-expanded={blocksOpen[0]} aria-controls="foundation-topics" onClick={() => setBlocksOpen(v => [!v[0], v[1], v[2]])}><span aria-hidden="true">{blocksOpen[0] ? '−' : '+'}</span><span><b>Block 01</b><span>From Reality to Data</span></span></button></header><div id="foundation-topics" hidden={!blocksOpen[0]}>
           <div className={s.topicGroup}>
-            <button className={`${s.topicControl} ${!isPlanned && !isData ? s.currentTopic : ''}`} type="button" aria-expanded={mathematicsOpen} aria-controls="mathematics-steps" onClick={() => setMathematicsOpen(!mathematicsOpen)}><span>01</span><strong>Mathematics</strong><span aria-hidden="true">{mathematicsOpen ? '−' : '+'}</span></button>
-            <ol id="mathematics-steps" className={s.stepLinks} hidden={!mathematicsOpen}>{stepLabels.map((label, index) => <li key={label}><Link to={`/learn?topic=mathematics&step=${index + 1}`} aria-current={!isPlanned && !isData && step === index + 1 ? 'step' : undefined} onClick={selectStep}><span aria-hidden="true">{index + 1}</span>{label}</Link></li>)}</ol>
+            <button className={`${s.topicControl} ${!isPlanned && !isData && !isExercise ? s.currentTopic : ''}`} type="button" aria-expanded={mathematicsOpen} aria-controls="mathematics-steps" onClick={() => setMathematicsOpen(!mathematicsOpen)}><span>01</span><strong>Mathematics</strong><span aria-hidden="true">{mathematicsOpen ? '−' : '+'}</span></button>
+            <ol id="mathematics-steps" className={s.stepLinks} hidden={!mathematicsOpen}>{stepLabels.map((label, index) => <li key={label}><Link to={`/learn?topic=mathematics&step=${index + 1}`} aria-current={!isPlanned && !isData && !isExercise && step === index + 1 ? 'step' : undefined} onClick={selectStep}><span aria-hidden="true">{index + 1}</span>{label}</Link></li>)}</ol>
           </div>
           <div className={s.topicGroup}>
             <button className={`${s.topicControl} ${isData ? s.currentTopic : ''}`} type="button" aria-expanded={dataOpen} aria-controls="data-steps" onClick={() => setDataOpen(!dataOpen)}><strong>Data Representation</strong><span aria-hidden="true">{dataOpen ? '−' : '+'}</span></button>
             <ol id="data-steps" className={s.stepLinks} hidden={!dataOpen}>{dataLabels.map((label, index) => <li key={label}><Link to={`/learn?topic=data-representation&step=${index + 1}`} aria-current={isData && step === index + 1 ? 'step' : undefined} onClick={selectStep}><span aria-hidden="true">{index + 1}</span>{label}</Link></li>)}</ol>
-          </div></div>
+          </div>
+          <div className={s.topicGroup}><Link className={`${s.topicControl} ${s.exerciseLink} ${isExercise ? s.currentTopic : ''}`} to={exerciseRoute} aria-current={isExercise ? 'page' : undefined} onClick={selectStep}><strong>Block 1 application</strong><span aria-hidden="true">→</span></Link></div>
+          </div>
         </nav>
         {['Models and Mistakes', 'Learning and Improvement'].map((title, index) => <section className={s.block} key={title}><header><button className={s.blockControl} type="button" aria-expanded={blocksOpen[index + 1]} aria-controls={`planned-block-${index}`} onClick={() => setBlocksOpen(previous => previous.map((open, i) => i === index + 1 ? !open : open))}><span aria-hidden="true">{blocksOpen[index + 1] ? '-' : '+'}</span><span><b>Block 0{index + 2}</b><span>{title}</span></span></button></header><div className={s.blockPreview}>{(index === 0 ? ['Model', 'Loss'] : ['Gradient', 'Optimization']).map(name => <span className={s.plannedTopic} key={name} aria-disabled="true">{name}</span>)}<p id={`planned-block-${index}`} hidden={!blocksOpen[index + 1]}>These topics are planned.</p></div></section>)}
         <p className={s.laterBlocks}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></svg> More learning groups later</p>
       </div>
     </aside>
-    <article className={s.lesson} data-step={isData ? undefined : step}>
-      <div className={s.lessonMeta} aria-label="Lesson context"><p>AI Foundations<span>/</span><b>Block 01</b><span>/</span>{isPlanned ? "Upcoming topic" : topicTitle}</p>{!isPlanned && <div className={s.stepStatus}><span>Step {step} of {activeScreens.length}</span><span className={s.stepDots} aria-hidden="true">{activeScreens.map((_, index) => <i className={index + 1 === step ? s.activeDot : ''} key={index}/>)}</span></div>}</div>
-      {isPlanned ? <><h1 ref={headingRef} tabIndex={-1}>This topic is planned.</h1><p>Mathematics for AI is available to explore. More topics are being developed.</p><Link className={s.continueButton} to="/learn?topic=mathematics&step=1">Explore Mathematics for AI <Arrow/></Link></> : <>
+    <article className={s.lesson} data-step={isData || isExercise ? undefined : step}>
+      <div className={s.lessonMeta} aria-label="Lesson context"><p>AI Foundations<span>/</span><b>Block 01</b><span>/</span>{isPlanned ? "Upcoming topic" : topicTitle}</p>{!isPlanned && !isExercise && <div className={s.stepStatus}><span>Step {step} of {activeScreens.length}</span><span className={s.stepDots} aria-hidden="true">{activeScreens.map((_, index) => <i className={index + 1 === step ? s.activeDot : ''} key={index}/>)}</span></div>}</div>
+      {isExercise ? <BlockOneExercise/> : isPlanned ? <><h1 ref={headingRef} tabIndex={-1}>This topic is planned.</h1><p>Mathematics for AI is available to explore. More topics are being developed.</p><Link className={s.continueButton} to="/learn?topic=mathematics&step=1">Explore Mathematics for AI <Arrow/></Link></> : <>
         <h1 ref={headingRef} tabIndex={-1} className={!isData && step === 2 ? s.longTitle : ''}>{(isData ? dataTitles : titles)[step - 1]}</h1>
         <Screen/>
+        {isData && step === 4 && <ExerciseEntry/>}
         <footer className={s.lessonFooter}>
           <button type="button" className={s.backButton} disabled={!isData && step === 1} onClick={() => goToStep(step - 1)}><span aria-hidden="true">‹</span>Back</button>
           <div className={s.nextThought}><b>Next</b><div>{(isData ? dataNext : nextCopy)[step - 1].slice(0, -1).map(line => <p key={line}>{line}</p>)}<p className={s.nextQuestion}>{(isData ? dataNext : nextCopy)[step - 1].at(-1)}</p></div></div>
